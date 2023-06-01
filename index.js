@@ -5,6 +5,8 @@ require("dotenv").config();
 
 const app = express();
 
+const userRouter = require("./routes/user");
+
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -19,6 +21,9 @@ mongoose
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// router
+app.use("/user", userRouter);
 
 app.listen(process.env.PORT || 3000, "0.0.0.0", () => {
   console.log("Server started on port 3000");
