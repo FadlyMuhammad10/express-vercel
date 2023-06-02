@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user_model");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 
@@ -46,7 +47,14 @@ router.post("/login", async (req, res) => {
     if (!isPasswordMatch) {
       res.json({ message: "password wrong" });
     }
-    res.status(200).json({ message: "success login" });
+    const token = jwt.sign(
+      { user_id: user._id, role: user.role },
+      process.env.TOKEN_SECRET,
+      {
+        expiresIn: "1800s",
+      }
+    );
+    res.status(200).json({ message: "success login", token });
   } catch (error) {
     res.status(500).json({ message: "failed login", error });
   }
