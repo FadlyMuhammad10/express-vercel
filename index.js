@@ -27,6 +27,7 @@ mongoose
   .catch((error) => {
     console.log("Error connecting to MongoDB");
   });
+console.log(process.env.MONGO_URI);
 
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
