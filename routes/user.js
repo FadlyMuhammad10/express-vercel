@@ -40,6 +40,7 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
+
     if (!user) {
       res.json({ message: "user not found" });
     }
@@ -54,6 +55,7 @@ router.post("/login", async (req, res) => {
         expiresIn: "1800s",
       }
     );
+
     res.status(200).json({ message: "success login", token });
   } catch (error) {
     res.status(500).json({ message: "failed login", error });
