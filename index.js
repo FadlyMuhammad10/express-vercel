@@ -27,6 +27,7 @@ const kategoriRouter = require("./routes/kategori");
 const lokasiRouter = require("./routes/lokasi");
 const kelasRouter = require("./routes/kelas");
 const landingRouter = require("./routes/landingpage");
+const detailpageRouter = require("./routes/detailpage");
 
 const URL = `/api/v1`;
 
@@ -55,6 +56,7 @@ app.use("/kategori", kategoriRouter);
 app.use("/lokasi", lokasiRouter);
 app.use("/kelas", kelasRouter);
 app.use(`${URL}/landingpage`, landingRouter);
+app.use(`${URL}/detailpage`, detailpageRouter);
 
 app.listen(process.env.PORT || 3000, "0.0.0.0", () => {
   console.log("Server started on port 3000");
