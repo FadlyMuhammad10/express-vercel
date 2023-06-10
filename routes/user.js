@@ -39,7 +39,9 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const user = await User.findOne({ email });
+
     if (!user) {
       res.json({ message: "user not found" });
     }
@@ -55,7 +57,11 @@ router.post("/login", async (req, res) => {
       }
     );
 
-    res.status(200).json({ message: "success login", token });
+    res.status(200).json({
+      message: "success login",
+      token,
+      nama_lengkap: user.nama_lengkap,
+    });
   } catch (error) {
     res.status(500).json({ message: "failed login", error });
   }
