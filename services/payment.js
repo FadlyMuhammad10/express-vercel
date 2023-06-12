@@ -6,8 +6,6 @@ exports.paymentKelas = async (req, res) => {
   const { body } = req;
   let token;
 
-  console.log(token);
-
   let snap = new midtransClient.Snap({
     // Set to true if you want Production Environment (accept real transaction).
     isProduction: false,
@@ -17,15 +15,15 @@ exports.paymentKelas = async (req, res) => {
   let parameter = {
     transaction_details: {
       order_id: "YOUR-ORDERID-123456", //uuid.v4(),
-      gross_amount: 25000, //body.harga,
+      gross_amount: body.harga, //body.harga,
     },
     credit_card: {
       secure: true,
     },
     customer_details: {
-      full_name: "Fadly Muhammad", //body.nama_lengkap,
-      email: "test@gmail.com", //body.email,
-      school: "los santos school", //body.asal_sekolah,
+      full_name: body.nama_lengkap, //body.nama_lengkap,
+      email: body.email, //body.email,
+      school: body.asal_sekolah, //body.asal_sekolah,
     },
   };
 
