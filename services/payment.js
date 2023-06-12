@@ -22,8 +22,10 @@ exports.paymentKelas = async (req, res) => {
     },
     customer_details: {
       full_name: body.nama_lengkap, //body.nama_lengkap,
-      email: body.email, //body.email,
-      school: body.asal_sekolah, //body.asal_sekolah,
+      tempat: body.tempat, //body.email,
+      mapel: body.mapel, //body.asal_sekolah,
+      tanggal: body.tanggal,
+      waktu: body.waktu,
     },
   };
 
