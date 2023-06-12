@@ -14,7 +14,7 @@ exports.paymentKelas = async (req, res) => {
 
   let parameter = {
     transaction_details: {
-      order_id: "YOUR-ORDERID-123456", //uuid.v4(),
+      order_id: uuid.v4(), //uuid.v4(),
       gross_amount: body.harga, //body.harga,
     },
     credit_card: {
