@@ -26,6 +26,8 @@ exports.paymentKelas = async (req, res) => {
       mapel: body.mapel,
       tanggal: body.tanggal,
       waktu: body.waktu,
+      email: body.email,
+      address: body.alamat,
     },
   };
 
