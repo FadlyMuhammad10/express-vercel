@@ -22,12 +22,12 @@ exports.paymentKelas = async (req, res) => {
     },
     customer_details: {
       first_name: body.nama_lengkap,
-      tempat: body.tempat,
-      mapel: body.mapel,
-      tanggal: body.tanggal,
-      waktu: body.waktu,
-      email: body.email,
-      address: body.alamat,
+      // tempat: body.tempat,
+      // mapel: body.mapel,
+      // tanggal: body.tanggal,
+      // waktu: body.waktu,
+      // email: body.email,
+      // address: body.alamat,
     },
   };
 
