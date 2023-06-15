@@ -15,9 +15,9 @@ router.get("/", async (req, res) => {
 });
 router.get("/artikel", async (req, res) => {
   try {
-    const artikel = await Artikel.find().select(
-      "_id title author pengertian date"
-    );
+    const artikel = await Artikel.find()
+      .select("_id title kategori author pengertian date image_url")
+      .populate("kategori");
 
     res.status(200).json({ data: artikel });
   } catch (error) {
