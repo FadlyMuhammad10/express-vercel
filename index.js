@@ -63,7 +63,8 @@ app.use("/kelas", kelasRouter);
 app.use(`${URL}/landingpage`, landingRouter);
 app.use(`${URL}/detailpage`, detailpageRouter);
 app.use(`${URL}`, paymentRouter);
-app.use('/artikel', artikelRouter);
+
+app.use("/artikel", artikelRouter);
 
 app.listen(process.env.PORT || 3000, "0.0.0.0", () => {
   console.log("Server started on port 3000");

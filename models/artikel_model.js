@@ -11,6 +11,10 @@ let artikelSchema = mongoose.Schema({
   artikel_web: String,
   author: String,
   pengertian: String,
+  subbab1: String,
+  artikel1: String,
+  subbab2: String,
+  artikel2: String,
 });
 
 module.exports = mongoose.model("Artikel", artikelSchema);
