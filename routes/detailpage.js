@@ -17,7 +17,7 @@ router.get("/:id", async (req, res) => {
 router.get("/artikel/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const artikel = await Artikel.findOne({ _id: id });
+    const artikel = await Artikel.findOne({ _id: id }).populate("kategori");
 
     res.status(200).json({ data: artikel });
   } catch (error) {
