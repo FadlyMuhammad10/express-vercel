@@ -25,14 +25,14 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
-const userRouter = require("./routes/user");
-const kategoriRouter = require("./routes/kategori");
-const lokasiRouter = require("./routes/lokasi");
-const kelasRouter = require("./routes/kelas");
-const landingRouter = require("./routes/landingpage");
-const detailpageRouter = require("./routes/detailpage");
-const paymentRouter = require("./routes/payment");
-const artikelRouter = require("./routes/artikel");
+const userRouter = require("./app/user/router");
+const kategoriRouter = require("./app/kategori/router");
+const lokasiRouter = require("./app/lokasi/router");
+const kelasRouter = require("./app/kelas/router");
+const landingRouter = require("./app/landingpage/router");
+const detailpageRouter = require("./app/detailpage/router");
+const paymentRouter = require("./app/payment/router");
+const artikelRouter = require("./app/artikel/router");
 
 const URL = `/api/v1`;
 

@@ -1,6 +1,7 @@
 const uuid = require("uuid");
 
 const midtransClient = require("midtrans-client");
+const Transaction = require("../app/transaction/model");
 // Create Snap API instance
 exports.paymentKelas = async (req, res) => {
   const { body } = req;
@@ -9,7 +10,8 @@ exports.paymentKelas = async (req, res) => {
   let snap = new midtransClient.Snap({
     // Set to true if you want Production Environment (accept real transaction).
     isProduction: false,
-    serverKey: "SB-Mid-server-HHAZPfs8KNjdpbvGHMKNf_9K",
+    serverKey: process.env.server_key,
+    clientKey: process.env.client_key,
   });
 
   let parameter = {
@@ -32,3 +34,24 @@ exports.paymentKelas = async (req, res) => {
   const snapToken = await snap.createTransaction(parameter);
   return { token: snapToken.token };
 };
+// exports.callback = async (req, res) => {
+//   let apiClient = new midtransClient.Snap({
+//     // Set to true if you want Production Environment (accept real transaction).
+//     isProduction: false,
+//     serverKey: process.env.server_key,
+//     clientKey: process.env.client_key,
+//   });
+//   const token = req.headers.authorization.split(" ")[0];
+//   apiClient.transaction
+//     .notification(notificationJson)
+//     .then((statusResponse) => {
+//       let orderId = statusResponse.order_id;
+//       let status = statusResponse.transaction_status;
+//       let fraudStatus = statusResponse.fraud_status;
+
+//       if (status == "capture") {
+//         if (fraudStatus == "accept") {
+//         }
+//       }
+//     });
+// };
