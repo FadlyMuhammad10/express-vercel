@@ -36,24 +36,3 @@ exports.paymentKelas = async (req, res) => {
   const snapToken = await snap.createTransaction(parameter);
   return { token: snapToken.token };
 };
-// exports.callback = async (req, res) => {
-//   let apiClient = new midtransClient.Snap({
-//     // Set to true if you want Production Environment (accept real transaction).
-//     isProduction: false,
-//     serverKey: process.env.server_key,
-//     clientKey: process.env.client_key,
-//   });
-//   const token = req.headers.authorization.split(" ")[0];
-//   apiClient.transaction
-//     .notification(notificationJson)
-//     .then((statusResponse) => {
-//       let orderId = statusResponse.order_id;
-//       let status = statusResponse.transaction_status;
-//       let fraudStatus = statusResponse.fraud_status;
-
-//       if (status == "capture") {
-//         if (fraudStatus == "accept") {
-//         }
-//       }
-//     });
-// };

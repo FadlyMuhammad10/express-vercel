@@ -7,6 +7,7 @@ let transactionSchema = mongoose.Schema({
   },
   transaction_status: {
     type: String,
+    default: "pending",
   },
   transaction_id: {
     type: String,
