@@ -34,7 +34,7 @@ module.exports.paymentKelas = async (req, res) => {
   };
 
   const transaction = await Transaction({
-    body,
+    parameter,
   });
   await transaction.save();
 
