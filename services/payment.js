@@ -3,7 +3,7 @@ const uuid = require("uuid");
 const midtransClient = require("midtrans-client");
 const Transaction = require("../app/transaction/model");
 // Create Snap API instance
-exports.paymentKelas = async (req, res) => {
+module.exports.paymentKelas = async (req, res) => {
   const { body } = req;
   let token;
 
@@ -33,6 +33,11 @@ exports.paymentKelas = async (req, res) => {
     },
   };
 
+  const transaction = await Transaction({
+    body,
+  });
+  await transaction.save();
+
   const snapToken = await snap.createTransaction(parameter);
-  return { token: snapToken.token };
+  return { token: snapToken.token, transaction };
 };
