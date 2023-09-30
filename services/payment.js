@@ -33,11 +33,11 @@ module.exports.paymentKelas = async (req, res) => {
     },
   };
 
-  // const transaction = await Transaction({
-  //   body,
-  // });
-  // await transaction.save();
+  const transaction = await Transaction({
+    body,
+  });
+  await transaction.save();
 
   const snapToken = await snap.createTransaction(parameter);
-  return { token: snapToken.token };
+  return { token: snapToken.token,transaction };
 };
