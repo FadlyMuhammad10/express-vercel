@@ -58,7 +58,7 @@ module.exports = {
         message: "success login",
         token,
         nama_lengkap: user.nama_lengkap,
-        //email: user.email,
+        email: user.email,
       });
     } catch (error) {
       res.status(500).json({ message: "failed login", error });
