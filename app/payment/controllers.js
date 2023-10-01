@@ -16,6 +16,8 @@ module.exports = {
       const webhookData = req.body;
       const transaction = new Transaction({
         order_id: webhookData.order_id,
+        transaction_id: webhookData.transaction_id,
+        gross_amount: webhookData.gross_amount,
         transaction_status:
           webhookData.status_code === "200" ? "settlement" : "failure",
       });
