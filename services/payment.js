@@ -15,30 +15,26 @@ module.exports = {
       clientKey: process.env.client_key,
     });
 
-  let parameter = {
-    transaction_details: {
-      order_id: uuid.v4(), //uuid.v4(),
-      gross_amount: body.harga, //body.harga,
-    },
-    credit_card: {
-      secure: true,
-    },
-    customer_details: {
-      first_name: body.nama_lengkap,
-      // tempat: body.tempat,
-      // mapel: body.mapel,
-      // tanggal: body.tanggal,
-      // waktu: body.waktu,
-      email: body.email,
-      // address: body.alamat,
-    },
-  };
+    let parameter = {
+      transaction_details: {
+        order_id: uuid.v4(), //uuid.v4(),
+        gross_amount: body.harga, //body.harga,
+      },
+      credit_card: {
+        secure: true,
+      },
+      customer_details: {
+        first_name: body.nama_lengkap,
+        // tempat: body.tempat,
+        // mapel: body.mapel,
+        // tanggal: body.tanggal,
+        // waktu: body.waktu,
+        email: body.email,
+        // address: body.alamat,
+      },
+    };
 
-  const transaction = await Transaction({
-    body,
-  });
-  await transaction.save();
-
-  const snapToken = await snap.createTransaction(parameter);
-  return { token: snapToken.token, transaction };
+    const snapToken = await snap.createTransaction(parameter);
+    return { token: snapToken.token };
+  },
 };
