@@ -25,6 +25,9 @@ let transactionSchema = mongoose.Schema({
   fraud_status: {
     type: String,
   },
+  email: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Transaction", transactionSchema);

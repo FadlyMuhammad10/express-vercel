@@ -31,6 +31,9 @@ module.exports = {
         transaction_id: webhookData.transaction_id,
         gross_amount: webhookData.gross_amount,
         transaction_status: webhookData.transaction_status,
+        payment_type: webhookData.payment_type,
+        fraud_status: webhookData.fraud_status,
+        email: webhookData.email,
         // webhookData.status_code === "200" ? "settlement" : "pending",
       });
       await transaction.save();
