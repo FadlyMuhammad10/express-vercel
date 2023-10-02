@@ -32,7 +32,7 @@ module.exports = {
         transaction_id: webhookData.transaction_id,
         gross_amount: webhookData.gross_amount,
         transaction_status:
-          webhookData.status_code === "200" ? "settlement" : "failure",
+          webhookData.status_code === "200" ? "settlement" : "pending",
       });
       await transaction.save();
 
