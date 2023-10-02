@@ -33,7 +33,6 @@ const landingRouter = require("./app/landingpage/router");
 const detailpageRouter = require("./app/detailpage/router");
 const paymentRouter = require("./app/payment/router");
 const artikelRouter = require("./app/artikel/router");
-const transactionRouter = require("./app/transaction/router");
 
 const URL = `/api/v1`;
 
@@ -61,7 +60,7 @@ app.use("/user", userRouter);
 app.use("/kategori", kategoriRouter);
 app.use("/lokasi", lokasiRouter);
 app.use("/kelas", kelasRouter);
-app.use("/transaction", transactionRouter);
+
 app.use(`${URL}/landingpage`, landingRouter);
 app.use(`${URL}/detailpage`, detailpageRouter);
 app.use(`${URL}`, paymentRouter);

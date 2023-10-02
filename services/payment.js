@@ -30,7 +30,7 @@ module.exports = {
         // tanggal: body.tanggal,
         // waktu: body.waktu,
         email: body.email,
-        // address: body.alamat,
+        address: body.alamat,
       },
     };
 

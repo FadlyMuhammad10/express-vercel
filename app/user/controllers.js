@@ -59,6 +59,7 @@ module.exports = {
         token,
         nama_lengkap: user.nama_lengkap,
         email: user.email,
+        alamat: user.alamat,
       });
     } catch (error) {
       res.status(500).json({ message: "failed login", error });
