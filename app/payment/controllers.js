@@ -1,5 +1,6 @@
 const paymentService = require("../../services/payment");
 const Transaction = require("../transaction/model");
+const User = require("../user/model");
 
 module.exports = {
   payment: async (req, res, next) => {
@@ -14,6 +15,7 @@ module.exports = {
   webhook: async (req, res) => {
     try {
       const webhookData = req.body;
+      const user = await User.findOne({ email });
       // Cari apakah data transaksi dengan order_id yang sama sudah ada dalam database
       const existingTransaction = await Transaction.findOne({
         order_id: webhookData.order_id,
@@ -33,7 +35,7 @@ module.exports = {
         transaction_status: webhookData.transaction_status,
         payment_type: webhookData.payment_type,
         fraud_status: webhookData.fraud_status,
-        // email: req.user.email,
+        email: user.email,
         // webhookData.status_code === "200" ? "settlement" : "pending",
       });
       await transaction.save();
