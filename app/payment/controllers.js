@@ -33,7 +33,7 @@ module.exports = {
         transaction_status: webhookData.transaction_status,
         payment_type: webhookData.payment_type,
         fraud_status: webhookData.fraud_status,
-        email: webhookData.user_id,
+        email: req.user.email,
         // webhookData.status_code === "200" ? "settlement" : "pending",
       });
       await transaction.save();
