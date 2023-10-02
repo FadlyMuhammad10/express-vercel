@@ -20,8 +20,7 @@ module.exports = {
       });
       if (existingTransaction) {
         // Jika data sudah ada, tidak perlu memasukkan data baru ke database
-        existingTransaction.transaction_status =
-          webhookData.status_code === "200" ? "success" : "failure";
+        existingTransaction.transaction_status = webhookData.transaction_status;
         await existingTransaction.save();
         return res
           .status(200)
@@ -31,8 +30,8 @@ module.exports = {
         order_id: webhookData.order_id,
         transaction_id: webhookData.transaction_id,
         gross_amount: webhookData.gross_amount,
-        transaction_status:
-          webhookData.status_code === "200" ? "settlement" : "pending",
+        transaction_status: webhookData.transaction_status,
+        // webhookData.status_code === "200" ? "settlement" : "pending",
       });
       await transaction.save();
 
