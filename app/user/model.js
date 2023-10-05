@@ -36,6 +36,16 @@ let userSchema = mongoose.Schema(
       type: String,
       require: [true, "Alasan ikut program harus diisi"],
     },
+    purchasedCourses: [
+      // Kursus yang telah dibeli oleh pengguna
+      {
+        courseId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Kelas", // Referensi ke kursus
+        },
+        purchaseDate: Date, // Tanggal pembelian
+      },
+    ],
   },
   { timestamps: true }
 );

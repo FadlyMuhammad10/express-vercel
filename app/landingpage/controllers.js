@@ -4,7 +4,7 @@ const Kelas = require("../kelas/model");
 module.exports = {
   index: async (req, res, next) => {
     try {
-      const kelas = await Kelas.find().select("_id judul harga");
+      const kelas = await Kelas.find().select("_id judul harga instructor");
 
       res.status(200).json({ data: kelas });
     } catch (error) {

@@ -3,13 +3,7 @@ const Kelas = require("./model");
 module.exports = {
   create: async (req, res, next) => {
     try {
-      const { judul, deskripsi_kelas, harga, image_url } = req.body;
-      const kelas = await Kelas({
-        judul,
-        deskripsi_kelas,
-        harga,
-        image_url,
-      });
+      const kelas = await Kelas(req.body);
       await kelas.save();
       res.status(201).json({ message: "success add kelas", kelas });
     } catch (error) {
