@@ -5,7 +5,7 @@ module.exports = {
   index: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const kelas = await Kelas.findOne({ _id: id });
+      const kelas = await Kelas.findOne({ _id: id }).populate("Kategori");
 
       res.status(200).json({ data: kelas });
     } catch (error) {

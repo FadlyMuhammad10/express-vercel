@@ -7,26 +7,40 @@ let kelasSchema = mongoose.Schema({
   image_url: String,
   harga: Number,
   instructor: String,
-  modules: [
+  Kategori: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Kategori",
+  },
+  materi: [
     {
       _id: {
         type: String,
         default: uuid.v4, // Menggunakan uuidv4 sebagai nilai default
       },
-      title: String, // Judul modul
-      lessons: [
-        // Pelajaran dalam modul
-        {
-          _id: {
-            type: String,
-            default: uuid.v4, // Menggunakan uuidv4 sebagai nilai default
-          },
-          title: String, // Judul pelajaran
-          videoUrl: String, // URL video pelajaran
-        },
-      ],
+      judulMateri: String,
+      videoUrl: String,
     },
   ],
+  // modules: [
+  //   {
+  //     _id: {
+  //       type: String,
+  //       default: uuid.v4, // Menggunakan uuidv4 sebagai nilai default
+  //     },
+  //     title: String, // Judul modul
+  //     lessons: [
+  //       // Pelajaran dalam modul
+  //       {
+  //         _id: {
+  //           type: String,
+  //           default: uuid.v4, // Menggunakan uuidv4 sebagai nilai default
+  //         },
+  //         title: String, // Judul pelajaran
+  //         videoUrl: String, // URL video pelajaran
+  //       },
+  //     ],
+  //   },
+  // ],
 });
 
 module.exports = mongoose.model("Kelas", kelasSchema);
