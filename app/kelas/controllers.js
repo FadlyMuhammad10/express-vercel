@@ -21,11 +21,8 @@ module.exports = {
   edit: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { judul, deskripsi_kelas, harga, image_url } = req.body;
-      const kelas = await Kelas.findOneAndUpdate(
-        { _id: id },
-        { judul, deskripsi_kelas, harga, image_url }
-      );
+      // const { judul, deskripsi_kelas, harga, image_url } = req.body;
+      const kelas = await Kelas.findOneAndUpdate({ _id: id }, req.body);
       res.status(201).json({ kelas, message: "success update data" });
     } catch (error) {
       res.status(500).json({ message: "failed update data" });
