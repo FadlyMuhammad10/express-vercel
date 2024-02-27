@@ -27,9 +27,6 @@ module.exports = {
         first_name: body.nama_lengkap,
         email: body.email,
       },
-      item_details: {
-        id: body.id,
-      },
     };
 
     const snapToken = await snap.createTransaction(parameter);
