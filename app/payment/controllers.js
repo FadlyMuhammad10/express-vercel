@@ -28,14 +28,12 @@ module.exports = {
           .send("Webhook dari Midtrans diterima (status transaksi diperbarui)");
       }
       const transaction = new Transaction({
-        user_id: webhookData.user_id,
         order_id: webhookData.order_id,
         transaction_id: webhookData.transaction_id,
         gross_amount: webhookData.gross_amount,
         transaction_status: webhookData.transaction_status,
         payment_type: webhookData.payment_type,
         fraud_status: webhookData.fraud_status,
-        email: webhookData.email,
 
         // webhookData.status_code === "200" ? "settlement" : "pending",
       });

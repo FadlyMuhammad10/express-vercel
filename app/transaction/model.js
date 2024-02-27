@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
 let transactionSchema = mongoose.Schema({
-  user_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
   transaction_status: {
     type: String,
     default: "pending",
@@ -23,9 +19,6 @@ let transactionSchema = mongoose.Schema({
     type: String,
   },
   fraud_status: {
-    type: String,
-  },
-  email: {
     type: String,
   },
 });
