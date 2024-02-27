@@ -4,7 +4,7 @@ const router = express.Router();
 const { payment, webhook } = require("./controllers");
 const auth = require("../../middleware/auth");
 
-router.post("/payment", auth, payment);
+router.post("/payment", payment);
 router.post("/webhook", auth, webhook);
 
 module.exports = router;
