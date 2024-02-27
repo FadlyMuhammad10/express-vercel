@@ -28,6 +28,7 @@ module.exports = {
           .send("Webhook dari Midtrans diterima (status transaksi diperbarui)");
       }
       const transaction = new Transaction({
+        user_id: webhookData.user_id,
         order_id: webhookData.order_id,
         transaction_id: webhookData.transaction_id,
         gross_amount: webhookData.gross_amount,
