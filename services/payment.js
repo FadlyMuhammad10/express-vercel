@@ -26,6 +26,7 @@ module.exports = {
       customer_details: {
         first_name: body.nama_lengkap,
         email: body.email,
+        user_id: body.user_id,
       },
     };
 
