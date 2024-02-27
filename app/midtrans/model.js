@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 let midtransSchema = mongoose.Schema({
   order_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "Transaction",
   },
   user_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "User",
   },
 });
