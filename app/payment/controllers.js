@@ -14,7 +14,7 @@ module.exports = {
   webhook: async (req, res) => {
     try {
       const webhookData = req.body;
-
+      console.log(webhookData);
       // Cari apakah data transaksi dengan order_id yang sama sudah ada dalam database
       const existingTransaction = await Transaction.findOne({
         order_id: webhookData.order_id,
@@ -35,7 +35,7 @@ module.exports = {
         transaction_status: webhookData.transaction_status,
         payment_type: webhookData.payment_type,
         fraud_status: webhookData.fraud_status,
-        email: webhookData.email,
+        email: req.user.data.email,
 
         // webhookData.status_code === "200" ? "settlement" : "pending",
       });
