@@ -33,6 +33,7 @@ const landingRouter = require("./app/landingpage/router");
 const detailpageRouter = require("./app/detailpage/router");
 const paymentRouter = require("./app/payment/router");
 const artikelRouter = require("./app/artikel/router");
+const myCourseRouter = require("./app/myCourse/router");
 
 const URL = `/api/v1`;
 
@@ -64,6 +65,7 @@ app.use("/kelas", kelasRouter);
 app.use(`${URL}/landingpage`, landingRouter);
 app.use(`${URL}/detailpage`, detailpageRouter);
 app.use(`${URL}`, paymentRouter);
+app.use(`${URL}/my-course`, myCourseRouter);
 
 app.use("/artikel", artikelRouter);
 

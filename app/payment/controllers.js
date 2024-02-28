@@ -1,5 +1,6 @@
 const paymentService = require("../../services/payment");
 const Transaction = require("../transaction/model");
+const User = require("../user/model");
 
 module.exports = {
   payment: async (req, res, next) => {
@@ -34,11 +35,20 @@ module.exports = {
         transaction_status: webhookData.transaction_status,
         payment_type: webhookData.payment_type,
         fraud_status: webhookData.fraud_status,
-
+        kelas_id: req.body,
         // webhookData.status_code === "200" ? "settlement" : "pending",
       });
       await transaction.save();
 
+      if (transaction_status === "settlement") {
+        // Temukan pengguna berdasarkan alamat email
+        const user = await User.findOne({ email });
+        if (user) {
+          // Tambahkan ID kursus ke dalam purchasedCourses pengguna
+          user.purchasedCourses.push(course_id);
+          await user.save();
+        }
+      }
       res.status(200).send("Webhook dari Midtrans berhasil diterima");
     } catch (error) {
       res
