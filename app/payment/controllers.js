@@ -40,15 +40,15 @@ module.exports = {
       });
       await transaction.save();
 
-      if (transaction_status === "settlement") {
-        // Temukan pengguna berdasarkan alamat email
-        const user = await User.findOne({ email });
-        if (user) {
-          // Tambahkan ID kursus ke dalam purchasedCourses pengguna
-          user.purchasedCourses.push(course_id);
-          await user.save();
-        }
-      }
+      // if (transaction.transaction_status === "settlement") {
+      //   // Temukan pengguna berdasarkan alamat email
+      //   const user = await User.findOne({ email });
+      //   if (user) {
+      //     // Tambahkan ID kursus ke dalam purchasedCourses pengguna
+      //     user.purchasedCourses.push(course_id);
+      //     await user.save();
+      //   }
+      // }
       res.status(200).send("Webhook dari Midtrans berhasil diterima");
     } catch (error) {
       res
