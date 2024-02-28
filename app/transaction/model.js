@@ -21,10 +21,6 @@ let transactionSchema = mongoose.Schema({
   fraud_status: {
     type: String,
   },
-  kelas_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Kelas",
-  },
 });
 
 module.exports = mongoose.model("Transaction", transactionSchema);
