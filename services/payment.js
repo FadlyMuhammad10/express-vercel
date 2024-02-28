@@ -1,7 +1,6 @@
 const uuid = require("uuid");
 
 const midtransClient = require("midtrans-client");
-const Midtrans = require("../app/midtrans/model");
 // Create Snap API instance
 module.exports = {
   paymentKelas: async (req, res) => {
