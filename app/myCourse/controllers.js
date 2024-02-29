@@ -50,7 +50,7 @@ module.exports = {
         const transactionDetails = {
           transaction_details: {
             order_id: "ORDER-" + uuid.v4(),
-            gross_amount: parseInt(body.harga),
+            gross_amount: 25000,
           },
           customer_details: {
             first_name: body.nama_lengkap,
@@ -77,7 +77,7 @@ module.exports = {
           const transactionDetails = {
             transaction_details: {
               order_id: "ORDER-" + uuid.v4(),
-              gross_amount: parseInt(body.harga),
+              gross_amount: 25000,
             },
             customer_details: {
               first_name: body.nama_lengkap,
