@@ -1,4 +1,6 @@
 const MyCourse = require("./model");
+const midtransClient = require("midtrans-client");
+const uuid = require("uuid");
 
 module.exports = {
   index: async (req, res, next) => {
@@ -22,7 +24,15 @@ module.exports = {
     }
   },
   create: async (req, res) => {
+    let snap = new midtransClient.Snap({
+      // Set to true if you want Production Environment (accept real transaction).
+      isProduction: false,
+      serverKey: process.env.server_key,
+      clientKey: process.env.client_key,
+    });
+
     const { kelas_id } = req.body;
+    const { body } = req;
     try {
       const my_course = await MyCourse.findOne({
         user_id: req.user.user_id,
@@ -53,6 +63,21 @@ module.exports = {
           res.status(400).json({ error: "Kelas sudah ada dalam course Anda." });
         }
       }
+      // Membuat transaksi pembayaran dengan Midtrans Snap
+      const transactionDetails = {
+        transaction_details: {
+          order_id: "ORDER-" + uuid.v4(),
+          gross_amount: body.harga,
+        },
+        customer_details: {
+          first_name: body.nama_lengkap,
+          email: body.email,
+        },
+      };
+      const transactionToken = await snap.createTransaction(transactionDetails);
+
+      // Mengembalikan token transaksi dari Midtrans Snap
+      res.status(200).json({ token: transactionToken.token });
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
