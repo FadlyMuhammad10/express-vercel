@@ -46,9 +46,26 @@ module.exports = {
 
         await my_course.save();
 
-        return res
-          .status(201)
-          .json({ message: "success add My Course", my_course });
+        // Membuat transaksi pembayaran dengan Midtrans Snap
+        const transactionDetails = {
+          transaction_details: {
+            order_id: "ORDER-" + uuid.v4(),
+            gross_amount: parseInt(body.harga),
+          },
+          customer_details: {
+            first_name: body.nama_lengkap,
+            email: body.email,
+          },
+        };
+        const transactionToken = await snap.createTransaction(
+          transactionDetails
+        );
+
+        return res.status(201).json({
+          message: "success add My Course",
+          my_course,
+          token: transactionToken.token,
+        });
       } else {
         // Jika sudah ada, periksa apakah kelas_id sudah ada dalam array kelas_id
         if (!my_course.kelas_id.includes(kelas_id)) {
@@ -60,7 +77,7 @@ module.exports = {
           const transactionDetails = {
             transaction_details: {
               order_id: "ORDER-" + uuid.v4(),
-              gross_amount: body.harga,
+              gross_amount: parseInt(body.harga),
             },
             customer_details: {
               first_name: body.nama_lengkap,
