@@ -17,13 +17,13 @@ module.exports = {
 
     const { kelas_id } = req.body;
     const my_course = await MyCourse.findOne({
-      user_id: req.user.user_id,
+      user_id: body.user_id,
     });
     if (!my_course) {
       // Jika tidak ada, buat dokumen course baru dengan kelas_id yang diberikan
       const my_course = await MyCourse({
         kelas_id: [kelas_id],
-        user_id: req.user.user_id,
+        user_id: body.user_id,
       });
 
       await my_course.save();
