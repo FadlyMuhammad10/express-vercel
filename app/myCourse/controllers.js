@@ -56,28 +56,29 @@ module.exports = {
           my_course.kelas_id.push(kelas_id);
           await my_course.save();
 
-          return res
-            .status(200)
-            .json({ message: "Kelas berhasil ditambahkan ke course Anda." });
+          // Membuat transaksi pembayaran dengan Midtrans Snap
+          const transactionDetails = {
+            transaction_details: {
+              order_id: "ORDER-" + uuid.v4(),
+              gross_amount: body.harga,
+            },
+            customer_details: {
+              first_name: body.nama_lengkap,
+              email: body.email,
+            },
+          };
+          const transactionToken = await snap.createTransaction(
+            transactionDetails
+          );
+
+          return res.status(200).json({
+            message: "Kelas berhasil ditambahkan ke course Anda.",
+            token: transactionToken.token,
+          });
         } else {
           res.status(400).json({ error: "Kelas sudah ada dalam course Anda." });
         }
       }
-      // Membuat transaksi pembayaran dengan Midtrans Snap
-      const transactionDetails = {
-        transaction_details: {
-          order_id: "ORDER-" + uuid.v4(),
-          gross_amount: body.harga,
-        },
-        customer_details: {
-          first_name: body.nama_lengkap,
-          email: body.email,
-        },
-      };
-      const transactionToken = await snap.createTransaction(transactionDetails);
-
-      // Mengembalikan token transaksi dari Midtrans Snap
-      res.status(200).json({ token: transactionToken.token });
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
