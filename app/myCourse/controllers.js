@@ -37,22 +37,20 @@ module.exports = {
       const my_course = await MyCourse.findOne({
         user_id: req.user.user_id,
       });
-      if (!my_course) {
-        // Membuat transaksi pembayaran dengan Midtrans Snap
-        const transactionDetails = {
-          transaction_details: {
-            order_id: "ORDER-" + uuid.v4(),
-            gross_amount: parseInt(body.harga),
-          },
-          customer_details: {
-            first_name: body.nama_lengkap,
-            email: body.email,
-          },
-        };
+      // Membuat transaksi pembayaran dengan Midtrans Snap
+      const transactionDetails = {
+        transaction_details: {
+          order_id: "ORDER-" + uuid.v4(),
+          gross_amount: parseInt(body.harga),
+        },
+        customer_details: {
+          first_name: body.nama_lengkap,
+          email: body.email,
+        },
+      };
 
-        const transactionToken = await snap.createTransaction(
-          transactionDetails
-        );
+      const transactionToken = await snap.createTransaction(transactionDetails);
+      if (!my_course) {
         if (body.transaction_status === "settlement") {
           // Jika tidak ada, buat dokumen course baru dengan kelas_id yang diberikan
           const my_course = await MyCourse({
@@ -74,21 +72,6 @@ module.exports = {
           });
         }
       } else {
-        // Membuat transaksi pembayaran dengan Midtrans Snap
-        const transactionDetails = {
-          transaction_details: {
-            order_id: "ORDER-" + uuid.v4(),
-            gross_amount: parseInt(body.harga),
-          },
-          customer_details: {
-            first_name: body.nama_lengkap,
-            email: body.email,
-          },
-        };
-        const transactionToken = await snap.createTransaction(
-          transactionDetails
-        );
-
         if (body.transaction_status === "settlement") {
           if (!my_course.kelas_id.includes(kelas_id)) {
             // Jika sudah ada, periksa apakah kelas_id sudah ada dalam array kelas_id
