@@ -34,9 +34,9 @@ module.exports = {
     const { kelas_id } = req.body;
     const { body } = req;
     try {
-      const my_course = await MyCourse.findOne({
-        user_id: req.user.user_id,
-      });
+      // const my_course = await MyCourse.findOne({
+      //   user_id: req.user.user_id,
+      // });
       // Membuat transaksi pembayaran dengan Midtrans Snap
       const transactionDetails = {
         transaction_details: {
@@ -50,34 +50,28 @@ module.exports = {
       };
 
       const transactionToken = await snap.createTransaction(transactionDetails);
-      if (body.transaction_status === "settlement") {
-        // Jika status transaksi adalah "settlement"
-        if (!my_course) {
-          // Jika tidak ada kursus yang ditemukan untuk pengguna, membuatnya.
-          my_course = await MyCourse.create({
-            kelas_id: [kelas_id],
+      if (transactionToken.token) {
+        // Tambahkan kelas ke dalam course pengguna di sini
+        const myCourse = await MyCourse.findOne({ user_id: req.user.user_id });
+        if (!myCourse) {
+          const newCourse = new MyCourse({
             user_id: req.user.user_id,
+            kelas_id: [kelas_id],
+            transaction_status: "pending", // Anda bisa menetapkan status transaksi yang sesuai di sini
           });
+          await newCourse.save();
         } else {
-          // Jika kursus sudah ada, memeriksa apakah kelas sudah ada dalam kursus.
-          if (my_course.kelas_id.includes(kelas_id)) {
-            return res
-              .status(400)
-              .json({ error: "Kelas sudah ada dalam course Anda." });
-          }
-          my_course.kelas_id.push(kelas_id);
-          await my_course.save();
+          myCourse.kelas_id.push(kelas_id);
+          await myCourse.save();
         }
+
+        // Kirim respons ke klien dengan token transaksi
+        return res.status(200).json({ token: transactionToken.token });
       } else {
-        // Jika status transaksi bukan "settlement", kembalikan respons dengan status 400.
-        return res.status(400).json({
-          error: "Transaksi tidak berhasil. Status transaksi bukan settlement.",
-        });
+        return res
+          .status(400)
+          .json({ error: "Gagal membuat transaksi pembayaran." });
       }
-      return res.status(200).json({
-        message: "Kelas berhasil ditambahkan ke course Anda.",
-        token: transactionToken.token,
-      });
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
