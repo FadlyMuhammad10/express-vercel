@@ -50,46 +50,34 @@ module.exports = {
       };
 
       const transactionToken = await snap.createTransaction(transactionDetails);
-      if (!my_course) {
-        if (body.transaction_status === "settlement") {
-          // Jika tidak ada, buat dokumen course baru dengan kelas_id yang diberikan
-          const my_course = await MyCourse({
+      if (body.transaction_status === "settlement") {
+        // Jika status transaksi adalah "settlement"
+        if (!my_course) {
+          // Jika tidak ada kursus yang ditemukan untuk pengguna, membuatnya.
+          my_course = await MyCourse.create({
             kelas_id: [kelas_id],
             user_id: req.user.user_id,
           });
-
-          await my_course.save();
-
-          return res.status(201).json({
-            message: "success add My Course",
-            my_course,
-            token: transactionToken.token,
-          });
         } else {
-          return res.status(400).json({
-            error:
-              "Transaksi tidak berhasil. Status transaksi bukan settlement.",
-          });
-        }
-      } else {
-        if (body.transaction_status === "settlement") {
-          if (!my_course.kelas_id.includes(kelas_id)) {
-            // Jika sudah ada, periksa apakah kelas_id sudah ada dalam array kelas_id
-            // Jika belum ada, tambahkan kelas_id ke dalam array kelas_id
-            my_course.kelas_id.push(kelas_id);
-            await my_course.save();
-
-            return res.status(200).json({
-              message: "Kelas berhasil ditambahkan ke course Anda.",
-              token: transactionToken.token,
-            });
-          } else {
-            res
+          // Jika kursus sudah ada, memeriksa apakah kelas sudah ada dalam kursus.
+          if (my_course.kelas_id.includes(kelas_id)) {
+            return res
               .status(400)
               .json({ error: "Kelas sudah ada dalam course Anda." });
           }
+          my_course.kelas_id.push(kelas_id);
+          await my_course.save();
         }
+      } else {
+        // Jika status transaksi bukan "settlement", kembalikan respons dengan status 400.
+        return res.status(400).json({
+          error: "Transaksi tidak berhasil. Status transaksi bukan settlement.",
+        });
       }
+      return res.status(200).json({
+        message: "Kelas berhasil ditambahkan ke course Anda.",
+        token: transactionToken.token,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");
