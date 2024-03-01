@@ -34,43 +34,67 @@ module.exports = {
     const { kelas_id } = req.body;
     const { body } = req;
     try {
-      // const my_course = await MyCourse.findOne({
-      //   user_id: req.user.user_id,
-      // });
-      // Membuat transaksi pembayaran dengan Midtrans Snap
-      const transactionDetails = {
-        transaction_details: {
-          order_id: "ORDER-" + uuid.v4(),
-          gross_amount: parseInt(body.harga),
-        },
-        customer_details: {
-          first_name: body.nama_lengkap,
-          email: body.email,
-        },
-      };
+      const my_course = await MyCourse.findOne({
+        user_id: req.user.user_id,
+      });
+      if (!my_course) {
+        // Jika tidak ada, buat dokumen course baru dengan kelas_id yang diberikan
+        const my_course = await MyCourse({
+          kelas_id: [kelas_id],
+          user_id: req.user.user_id,
+        });
 
-      const transactionToken = await snap.createTransaction(transactionDetails);
-      if (transactionToken.token) {
-        // Tambahkan kelas ke dalam course pengguna di sini
-        const myCourse = await MyCourse.findOne({ user_id: req.user.user_id });
-        if (!myCourse) {
-          const newCourse = new MyCourse({
-            user_id: req.user.user_id,
-            kelas_id: [kelas_id],
-            transaction_status: "pending", // Anda bisa menetapkan status transaksi yang sesuai di sini
-          });
-          await newCourse.save();
-        } else {
-          myCourse.kelas_id.push(kelas_id);
-          await myCourse.save();
-        }
+        await my_course.save();
 
-        // Kirim respons ke klien dengan token transaksi
-        return res.status(200).json({ token: transactionToken.token });
+        // Membuat transaksi pembayaran dengan Midtrans Snap
+        const transactionDetails = {
+          transaction_details: {
+            order_id: "ORDER-" + uuid.v4(),
+            gross_amount: parseInt(body.harga),
+          },
+          customer_details: {
+            first_name: body.nama_lengkap,
+            email: body.email,
+          },
+        };
+        const transactionToken = await snap.createTransaction(
+          transactionDetails
+        );
+
+        return res.status(201).json({
+          message: "success add My Course",
+          my_course,
+          token: transactionToken.token,
+        });
       } else {
-        return res
-          .status(400)
-          .json({ error: "Gagal membuat transaksi pembayaran." });
+        // Jika sudah ada, periksa apakah kelas_id sudah ada dalam array kelas_id
+        if (!my_course.kelas_id.includes(kelas_id)) {
+          // Jika belum ada, tambahkan kelas_id ke dalam array kelas_id
+          my_course.kelas_id.push(kelas_id);
+          await my_course.save();
+
+          // Membuat transaksi pembayaran dengan Midtrans Snap
+          const transactionDetails = {
+            transaction_details: {
+              order_id: "ORDER-" + uuid.v4(),
+              gross_amount: parseInt(body.harga),
+            },
+            customer_details: {
+              first_name: body.nama_lengkap,
+              email: body.email,
+            },
+          };
+          const transactionToken = await snap.createTransaction(
+            transactionDetails
+          );
+
+          return res.status(200).json({
+            message: "Kelas berhasil ditambahkan ke course Anda.",
+            token: transactionToken.token,
+          });
+        } else {
+          res.status(400).json({ error: "Kelas sudah ada dalam course Anda." });
+        }
       }
     } catch (error) {
       console.error(error);
