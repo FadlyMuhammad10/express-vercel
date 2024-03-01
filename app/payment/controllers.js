@@ -18,11 +18,11 @@ module.exports = {
       // Periksa apakah status transaksi adalah "settlement"
       if (transaction_status === "settlement") {
         // Temukan kursus pengguna di database MyCourse berdasarkan user_id
-        let myCourse = await MyCourse.findOne({ user_id: req.user.user_id });
+        let myCourse = await MyCourse.findOne({ user_id: req.body });
         if (!myCourse) {
           // Jika kursus pengguna belum ada, buat kursus baru
           myCourse = new MyCourse({
-            user_id: req.user.user_id,
+            user_id: req.body,
             kelas_id: [kelas_id],
           });
         } else {
