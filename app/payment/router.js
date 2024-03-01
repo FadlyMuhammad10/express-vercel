@@ -6,6 +6,6 @@ const auth = require("../../middleware/auth");
 const { payment, webhook } = require("./controllers");
 
 router.post("/payment", payment);
-router.post("/webhook", webhook);
+router.post("/webhook", auth, webhook);
 
 module.exports = router;

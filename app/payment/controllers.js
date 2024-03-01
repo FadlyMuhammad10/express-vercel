@@ -14,15 +14,15 @@ module.exports = {
   },
   webhook: async (req, res) => {
     try {
-      const { kelas_id, user_id } = req.body;
+      const { kelas_id } = req.body;
       // Periksa apakah status transaksi adalah "settlement"
       if (transaction_status === "settlement") {
         // Temukan kursus pengguna di database MyCourse berdasarkan user_id
-        let myCourse = await MyCourse.findOne({ user_id });
+        let myCourse = await MyCourse.findOne({ user_id: req.user.user_id });
         if (!myCourse) {
           // Jika kursus pengguna belum ada, buat kursus baru
           myCourse = new MyCourse({
-            user_id,
+            user_id: req.user.user_id,
             kelas_id: [kelas_id],
           });
         } else {
