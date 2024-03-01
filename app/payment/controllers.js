@@ -1,5 +1,6 @@
 const paymentService = require("../../services/payment");
 const Transaction = require("../transaction/model");
+const MyCourse = require("../myCourse/model");
 
 module.exports = {
   payment: async (req, res, next) => {
@@ -13,6 +14,39 @@ module.exports = {
   },
   webhook: async (req, res) => {
     try {
+      const { kelas_id, user_id } = req.body;
+      // Periksa apakah status transaksi adalah "settlement"
+      if (transaction_status === "settlement") {
+        // Temukan kursus pengguna di database MyCourse berdasarkan user_id
+        let myCourse = await MyCourse.findOne({ user_id });
+        if (!myCourse) {
+          // Jika kursus pengguna belum ada, buat kursus baru
+          myCourse = new MyCourse({
+            user_id,
+            kelas_id: [kelas_id],
+          });
+        } else {
+          // Jika kursus pengguna sudah ada, periksa apakah kelas_id sudah ada dalam array
+          if (myCourse.kelas_id.includes(kelas_id)) {
+            console.error(
+              "Error: Pengguna sudah membeli kelas ini sebelumnya."
+            );
+            return res
+              .status(400)
+              .json({ error: "Anda sudah membeli kelas ini sebelumnya." });
+          }
+          // Jika belum, tambahkan kelas_id ke dalam array kelas_id
+          myCourse.kelas_id.push(kelas_id);
+        }
+        // Simpan perubahan pada myCourse
+        await myCourse.save();
+        console.log("Kelas berhasil ditambahkan ke course pengguna.");
+      } else {
+        console.log(
+          'Status transaksi bukan "settlement", tidak ada tindakan yang diambil.'
+        );
+      }
+
       const webhookData = req.body;
       console.log(webhookData);
       // Cari apakah data transaksi dengan order_id yang sama sudah ada dalam database

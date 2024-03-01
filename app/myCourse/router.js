@@ -5,7 +5,7 @@ const auth = require("../../middleware/auth");
 
 const { index, create } = require("./controllers");
 
-router.get("/", index);
+router.get("/", auth, index);
 router.post("/create", auth, create);
 
 module.exports = router;

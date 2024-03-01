@@ -4,11 +4,9 @@ const uuid = require("uuid");
 
 module.exports = {
   index: async (req, res, next) => {
-    const { user_id } = req.query;
-
     try {
       // Temukan pengguna berdasarkan ID
-      const user = await MyCourse.findOne(user_id)
+      const user = await MyCourse.findOne({ user_id: req.user.user_id })
         .populate("user_id")
         .populate({ path: "kelas_id", populate: { path: "Kategori" } });
 
