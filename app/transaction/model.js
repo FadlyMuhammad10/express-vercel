@@ -8,7 +8,7 @@ let transactionSchema = mongoose.Schema({
   transaction_id: {
     type: String,
   },
-  order_id: {
+  order_id_midtrans: {
     type: String,
   },
   gross_amount: {

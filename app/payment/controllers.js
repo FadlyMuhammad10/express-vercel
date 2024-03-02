@@ -49,7 +49,6 @@ module.exports = {
 
       const webhookData = req.body;
       console.log(webhookData);
-
       // Temukan transaksi berdasarkan order_id dari webhook
       const transaction = await Transaction.findOne({
         order_id_midtrans: webhookData.order_id,
