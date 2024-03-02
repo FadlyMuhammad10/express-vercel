@@ -72,10 +72,21 @@ module.exports = {
       });
       await transaction.save();
 
-      await Order.updateOne(
-        { order_id: webhookData.order_id },
-        { status: webhookData.transaction_status }
-      );
+      // Jika status transaksi adalah 'capture' (pembayaran berhasil)
+      if (webhookData.transaction_status === "settlement") {
+        // Perbarui model Order yang sesuai dengan order_id yang diterima dari webhook
+        const order = await Order.findOneAndUpdate(
+          { order_id: webhookData.order_id },
+          { status: "completed" },
+          { new: true }
+        );
+
+        if (!order) {
+          console.log("Order not found with order_id:", webhookData.order_id);
+        } else {
+          console.log("Order updated with order_id:", webhookData.order_id);
+        }
+      }
 
       res.status(200).send("Webhook dari Midtrans berhasil diterima");
     } catch (error) {
