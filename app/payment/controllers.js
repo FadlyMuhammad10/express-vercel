@@ -49,37 +49,40 @@ module.exports = {
 
       const webhookData = req.body;
       console.log(webhookData);
-      // Cari apakah data transaksi dengan order_id yang sama sudah ada dalam database
-      const existingTransaction = await Transaction.findOne({
-        order_id: webhookData.order_id,
+
+      // Temukan transaksi berdasarkan order_id dari webhook
+      const transaction = await Transaction.findOne({
+        order_id_midtrans: webhookData.order_id,
       });
 
-      if (existingTransaction) {
-        // Jika data sudah ada, tidak perlu memasukkan data baru ke database
-        existingTransaction.transaction_status = webhookData.transaction_status;
-        await existingTransaction.save();
-        return res
-          .status(200)
-          .send("Webhook dari Midtrans diterima (status transaksi diperbarui)");
-      } else {
-        const transaction = new Transaction({
-          order_id: webhookData.order_id,
-          transaction_id: webhookData.transaction_id,
-          gross_amount: webhookData.gross_amount,
-          transaction_status: webhookData.transaction_status,
-          payment_type: webhookData.payment_type,
-          fraud_status: webhookData.fraud_status,
-          // webhookData.status_code === "200" ? "settlement" : "pending",
-        });
-        await transaction.save();
+      if (!transaction) {
+        console.log(
+          "Transaksi tidak ditemukan dengan order_id:",
+          webhookData.order_id
+        );
+        return res.status(404).send("Transaksi tidak ditemukan");
       }
 
-      // Perbarui model Order yang sesuai dengan order_id yang diterima dari webhook
-      await Order.findOneAndUpdate(
-        { order_id: webhookData.order_id },
-        { status: webhookData.transaction_status },
-        { new: true }
-      );
+      // Perbarui status transaksi sesuai dengan yang diterima dari webhook
+      transaction.transaction_status = webhookData.transaction_status;
+      await transaction.save();
+
+      // Temukan pesanan berdasarkan order_id yang terkait dengan transaksi
+      const order = await Order.findOne({
+        order_id: transaction.order_id_midtrans,
+      });
+
+      if (!order) {
+        console.log(
+          "Pesanan tidak ditemukan dengan order_id:",
+          transaction.order_id_midtrans
+        );
+        return res.status(404).send("Pesanan tidak ditemukan");
+      }
+
+      // Perbarui status pesanan sesuai dengan status transaksi yang diterima dari webhook
+      order.status = webhookData.transaction_status;
+      await order.save();
 
       res.status(200).send("Webhook dari Midtrans berhasil diterima");
     } catch (error) {

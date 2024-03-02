@@ -1,4 +1,5 @@
 const Order = require("./model");
+const Transaction = require("../transaction/model");
 const midtransClient = require("midtrans-client");
 const uuid = require("uuid");
 
@@ -37,6 +38,15 @@ module.exports = {
       },
     };
     const transactionToken = await snap.createTransaction(transactionDetails);
+
+    const transaction = new Transaction({
+      order_id_midtrans: transactionDetails.transaction_details.order_id, // Simpan order_id Midtrans
+      transaction_id: transactionToken.transaction_id, // Gunakan transaction_id dari Midtrans
+      gross_amount: transactionDetails.transaction_details.gross_amount,
+      transaction_status:
+        transactionDetails.transaction_details.transaction_status,
+    });
+    await transaction.save();
 
     return res.status(201).json({
       message: "success add order",
