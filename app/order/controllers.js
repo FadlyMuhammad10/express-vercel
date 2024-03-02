@@ -14,6 +14,8 @@ module.exports = {
   create: async (req, res, next) => {
     const { order_item } = req.body;
     const { body } = req;
+    const webhookData = req.body;
+    console.log(webhookData);
 
     // Buat order baru
     const order = new Order({
@@ -41,15 +43,13 @@ module.exports = {
 
     const transaction = new Transaction({
       order_id_midtrans: transactionDetails.transaction_details.order_id, // Simpan order_id Midtrans
-      transaction_id: transactionDetails.transaction_details.transaction_id, // Gunakan transaction_id dari Midtrans
+      transaction_id: webhookData.transaction_id, // Gunakan transaction_id dari Midtrans
       gross_amount: transactionDetails.transaction_details.gross_amount,
-      transaction_status:
-        transactionDetails.transaction_details.transaction_status,
-      status_message: transactionDetails.transaction_details.status_message,
-      transaction_time: transactionDetails.transaction_details.transaction_time,
-      fraud_status: transactionDetails.transaction_details.fraud_status,
-      payment_type: transactionDetails.transaction_details.payment_type,
-      status_code: transactionDetails.transaction_details.status_code,
+      payment_type: webhookData.payment_type,
+      transaction_status: webhookData.transaction_status,
+      fraud_status: webhookData.fraud_status,
+      status_code: webhookData.status_code, // Tambahkan status code
+      transaction_time: webhookData.transaction_time,
     });
     await transaction.save();
 

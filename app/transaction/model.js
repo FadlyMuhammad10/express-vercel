@@ -24,9 +24,6 @@ let transactionSchema = mongoose.Schema({
   status_code: {
     type: String,
   },
-  status_message: {
-    type: String,
-  },
   transaction_time: {
     type: String,
   },
