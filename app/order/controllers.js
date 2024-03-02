@@ -18,7 +18,8 @@ module.exports = {
     const order = new Order({
       user_id: req.user.user_id,
       order_item,
-      price: body.harga,
+      price: parseInt(body.harga),
+      gross_amount: parseInt(body.harga),
     });
 
     // Simpan order ke database
@@ -27,7 +28,7 @@ module.exports = {
     const transactionDetails = {
       transaction_details: {
         order_id: "ORDER-" + uuid.v4(),
-        gross_amount: parseInt(body.harga),
+        gross_amount: order.gross_amount,
       },
       customer_details: {
         first_name: body.nama_lengkap,
