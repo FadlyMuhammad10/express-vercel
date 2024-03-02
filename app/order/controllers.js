@@ -20,7 +20,7 @@ module.exports = {
       order_item,
       price: parseInt(body.harga),
       gross_amount: parseInt(body.harga),
-      order_id: "ORDER-" + uuid.v4(),
+      order_id: uuid.v4(),
     });
 
     // Simpan order ke database
