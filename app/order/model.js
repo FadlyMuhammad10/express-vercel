@@ -13,12 +13,11 @@ let orderSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  order_item: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Kelas",
-    },
-  ],
+  order_item: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Kelas",
+  },
+
   order_id: {
     type: String,
   },
