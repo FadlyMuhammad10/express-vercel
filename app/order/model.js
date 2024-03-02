@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 let orderSchema = mongoose.Schema({
-  transaction_status: {
+  status: {
     type: String,
     default: "pending",
   },

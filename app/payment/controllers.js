@@ -74,7 +74,7 @@ module.exports = {
 
       await Order.updateOne(
         { order_id: webhookData.order_id },
-        { transaction_status: webhookData.transaction_status }
+        { status: webhookData.transaction_status }
       );
 
       res.status(200).send("Webhook dari Midtrans berhasil diterima");
