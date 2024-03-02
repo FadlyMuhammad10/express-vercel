@@ -53,10 +53,20 @@ module.exports = {
       const existingTransaction = await Transaction.findOne({
         order_id: webhookData.order_id,
       });
+      const existingOrder = await Order.findOne({
+        order_id: webhookData.order_id,
+      });
       if (existingTransaction) {
         // Jika data sudah ada, tidak perlu memasukkan data baru ke database
         existingTransaction.transaction_status = webhookData.transaction_status;
         await existingTransaction.save();
+        return res
+          .status(200)
+          .send("Webhook dari Midtrans diterima (status transaksi diperbarui)");
+      } else if (existingOrder) {
+        // Jika data sudah ada, tidak perlu memasukkan data baru ke database
+        existingOrder.status = webhookData.transaction_status;
+        await existingOrder.save();
         return res
           .status(200)
           .send("Webhook dari Midtrans diterima (status transaksi diperbarui)");
@@ -71,19 +81,6 @@ module.exports = {
         // webhookData.status_code === "200" ? "settlement" : "pending",
       });
       await transaction.save();
-
-      const existingOrder = await Order.findOne({
-        order_id: webhookData.order_id,
-      });
-
-      if (existingOrder) {
-        // Jika data sudah ada, tidak perlu memasukkan data baru ke database
-        existingOrder.status = webhookData.transaction_status;
-        await existingOrder.save();
-        return res
-          .status(200)
-          .send("Webhook dari Midtrans diterima (status transaksi diperbarui)");
-      }
 
       // if (webhookData.transaction_status === "settlement") {
       //   // Perbarui model Order yang sesuai dengan order_id yang diterima dari webhook
