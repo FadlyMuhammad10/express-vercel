@@ -53,9 +53,7 @@ module.exports = {
       const existingTransaction = await Transaction.findOne({
         order_id: webhookData.order_id,
       });
-      const existingOrder = await Order.findOne({
-        order_id: webhookData.order_id,
-      });
+
       if (existingTransaction) {
         // Jika data sudah ada, tidak perlu memasukkan data baru ke database
         existingTransaction.transaction_status = webhookData.transaction_status;
@@ -63,39 +61,33 @@ module.exports = {
         return res
           .status(200)
           .send("Webhook dari Midtrans diterima (status transaksi diperbarui)");
-      } else if (existingOrder) {
-        // Jika data sudah ada, tidak perlu memasukkan data baru ke database
-        existingOrder.status = webhookData.transaction_status;
-        await existingOrder.save();
-        return res
-          .status(200)
-          .send("Webhook dari Midtrans diterima (status transaksi diperbarui)");
+      } else {
+        const transaction = new Transaction({
+          order_id: webhookData.order_id,
+          transaction_id: webhookData.transaction_id,
+          gross_amount: webhookData.gross_amount,
+          transaction_status: webhookData.transaction_status,
+          payment_type: webhookData.payment_type,
+          fraud_status: webhookData.fraud_status,
+          // webhookData.status_code === "200" ? "settlement" : "pending",
+        });
+        await transaction.save();
       }
-      const transaction = new Transaction({
-        order_id: webhookData.order_id,
-        transaction_id: webhookData.transaction_id,
-        gross_amount: webhookData.gross_amount,
-        transaction_status: webhookData.transaction_status,
-        payment_type: webhookData.payment_type,
-        fraud_status: webhookData.fraud_status,
-        // webhookData.status_code === "200" ? "settlement" : "pending",
-      });
-      await transaction.save();
 
-      // if (webhookData.transaction_status === "settlement") {
-      //   // Perbarui model Order yang sesuai dengan order_id yang diterima dari webhook
-      //   const order = await Order.findOneAndUpdate(
-      //     { order_id: webhookData.order_id },
-      //     { status: "settlement" },
-      //     { new: true }
-      //   );
+      if (webhookData.transaction_status === "settlement") {
+        // Perbarui model Order yang sesuai dengan order_id yang diterima dari webhook
+        const order = await Order.findOneAndUpdate(
+          { order_id: webhookData.order_id },
+          { status: "settlement" },
+          { new: true }
+        );
 
-      //   if (!order) {
-      //     console.log("Order not found with order_id:", webhookData.order_id);
-      //   } else {
-      //     console.log("Order updated with order_id:", webhookData.order_id);
-      //   }
-      // }
+        if (!order) {
+          console.log("Order not found with order_id:", webhookData.order_id);
+        } else {
+          console.log("Order updated with order_id:", webhookData.order_id);
+        }
+      }
 
       res.status(200).send("Webhook dari Midtrans berhasil diterima");
     } catch (error) {
