@@ -47,9 +47,6 @@ module.exports = {
       gross_amount: transactionDetails.transaction_details.gross_amount,
       payment_type: webhookData.payment_type,
       transaction_status: webhookData.transaction_status,
-      fraud_status: webhookData.fraud_status,
-      status_code: webhookData.status_code, // Tambahkan status code
-      transaction_time: webhookData.transaction_time,
     });
     await transaction.save();
 
