@@ -5,7 +5,7 @@ let orderSchema = mongoose.Schema({
     type: String,
     default: "pending",
   },
-  transaction_id: {
+  transaction: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Transaction",
   },

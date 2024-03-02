@@ -1,6 +1,6 @@
 const paymentService = require("../../services/payment");
 const Transaction = require("../transaction/model");
-const MyCourse = require("../myCourse/model");
+const Order = require("../order/model");
 
 module.exports = {
   payment: async (req, res, next) => {
@@ -71,6 +71,11 @@ module.exports = {
         // webhookData.status_code === "200" ? "settlement" : "pending",
       });
       await transaction.save();
+
+      await Order.updateOne(
+        { order_id: webhookData.order_id },
+        { transaction_status: webhookData.transaction_status }
+      );
 
       res.status(200).send("Webhook dari Midtrans berhasil diterima");
     } catch (error) {
