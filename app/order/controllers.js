@@ -1,0 +1,45 @@
+const Order = require("./model");
+const midtransClient = require("midtrans-client");
+const uuid = require("uuid");
+
+let snap = new midtransClient.Snap({
+  // Set to true if you want Production Environment (accept real transaction).
+  isProduction: false,
+  serverKey: process.env.server_key,
+  clientKey: process.env.client_key,
+});
+
+module.exports = {
+  create: async (req, res, next) => {
+    const { order_item } = req.body;
+    const { body } = req;
+
+    // Buat order baru
+    const order = new Order({
+      user_id: req.user.user_id,
+      order_item,
+      price: body.harga,
+    });
+
+    // Simpan order ke database
+    await order.save();
+
+    const transactionDetails = {
+      transaction_details: {
+        order_id: "ORDER-" + uuid.v4(),
+        gross_amount: parseInt(body.harga),
+      },
+      customer_details: {
+        first_name: body.nama_lengkap,
+        email: body.email,
+      },
+    };
+    const transactionToken = await snap.createTransaction(transactionDetails);
+
+    return res.status(201).json({
+      message: "success add My Course",
+      order,
+      token: transactionToken.token,
+    });
+  },
+};

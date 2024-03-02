@@ -1,6 +1,6 @@
 const paymentService = require("../../services/payment");
 const Transaction = require("../transaction/model");
-// const MyCourse = require("../myCourse/model");
+const MyCourse = require("../myCourse/model");
 
 module.exports = {
   payment: async (req, res, next) => {
