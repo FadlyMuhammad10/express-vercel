@@ -45,8 +45,7 @@ module.exports = {
       order_id_midtrans: transactionDetails.transaction_details.order_id, // Simpan order_id Midtrans
       transaction_id: webhookData.transaction_id, // Gunakan transaction_id dari Midtrans
       gross_amount: transactionDetails.transaction_details.gross_amount,
-      payment_type: webhookData.payment_type,
-      transaction_status: webhookData.transaction_status,
+      // transaction_status: webhookData.transaction_status,
     });
     await transaction.save();
 
