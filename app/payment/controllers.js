@@ -77,7 +77,7 @@ module.exports = {
         // Perbarui model Order yang sesuai dengan order_id yang diterima dari webhook
         const order = await Order.findOneAndUpdate(
           { order_id: webhookData.order_id },
-          { status: "completed" },
+          { status: "settlement" },
           { new: true }
         );
 
