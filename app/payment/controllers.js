@@ -72,21 +72,33 @@ module.exports = {
       });
       await transaction.save();
 
-      // Jika status transaksi adalah 'capture' (pembayaran berhasil)
-      if (webhookData.transaction_status === "settlement") {
-        // Perbarui model Order yang sesuai dengan order_id yang diterima dari webhook
-        const order = await Order.findOneAndUpdate(
-          { order_id: webhookData.order_id },
-          { status: "settlement" },
-          { new: true }
-        );
+      const existingOrder = await Order.findOne({
+        order_id: webhookData.order_id,
+      });
 
-        if (!order) {
-          console.log("Order not found with order_id:", webhookData.order_id);
-        } else {
-          console.log("Order updated with order_id:", webhookData.order_id);
-        }
+      if (existingOrder) {
+        // Jika data sudah ada, tidak perlu memasukkan data baru ke database
+        existingOrder.status = webhookData.transaction_status;
+        await existingOrder.save();
+        return res
+          .status(200)
+          .send("Webhook dari Midtrans diterima (status transaksi diperbarui)");
       }
+
+      // if (webhookData.transaction_status === "settlement") {
+      //   // Perbarui model Order yang sesuai dengan order_id yang diterima dari webhook
+      //   const order = await Order.findOneAndUpdate(
+      //     { order_id: webhookData.order_id },
+      //     { status: "settlement" },
+      //     { new: true }
+      //   );
+
+      //   if (!order) {
+      //     console.log("Order not found with order_id:", webhookData.order_id);
+      //   } else {
+      //     console.log("Order updated with order_id:", webhookData.order_id);
+      //   }
+      // }
 
       res.status(200).send("Webhook dari Midtrans berhasil diterima");
     } catch (error) {
