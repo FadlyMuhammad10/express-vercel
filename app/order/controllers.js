@@ -40,7 +40,7 @@ module.exports = {
     const transactionToken = await snap.createTransaction(transactionDetails);
 
     const transaction = new Transaction({
-      order_id_midtrans: transactionDetails.transaction_details.order_id, // Simpan order_id Midtrans
+      order_id: transactionDetails.transaction_details.order_id, // Simpan order_id Midtrans
       transaction_id: transactionToken.transaction_id, // Gunakan transaction_id dari Midtrans
       gross_amount: transactionDetails.transaction_details.gross_amount,
       transaction_status:
