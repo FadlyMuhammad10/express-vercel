@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 let orderSchema = mongoose.Schema({
   status: {
     type: String,
+    enum: ["expire", "pending", "settlement", "capture"],
     default: "pending",
   },
   transaction: {
