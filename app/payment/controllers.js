@@ -76,7 +76,7 @@ module.exports = {
 
       // Perbarui model Order yang sesuai dengan order_id yang diterima dari webhook
       await Order.findOneAndUpdate(
-        { order_id: existingTransaction.order_id },
+        { order_id: webhookData.order_id },
         { status: webhookData.transaction_status },
         { new: true }
       );
