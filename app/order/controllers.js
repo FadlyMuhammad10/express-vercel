@@ -20,7 +20,7 @@ module.exports = {
       order_item,
       price: parseInt(body.harga),
       gross_amount: parseInt(body.harga),
-      order_id: uuid.v4(),
+      order_id: "test",
     });
 
     // Simpan order ke database
@@ -28,7 +28,7 @@ module.exports = {
 
     const transactionDetails = {
       transaction_details: {
-        order_id: order.order_id,
+        order_id: "test",
         gross_amount: order.gross_amount,
       },
       customer_details: {
