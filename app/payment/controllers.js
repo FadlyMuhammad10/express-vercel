@@ -1,5 +1,6 @@
 const paymentService = require("../../services/payment");
 const Transaction = require("../transaction/model");
+const MyCourse = require("../myCourse/model");
 const Order = require("../order/model");
 
 module.exports = {
@@ -87,6 +88,30 @@ module.exports = {
       // Perbarui status pesanan sesuai dengan status transaksi yang diterima dari webhook
       order.status = webhookData.transaction_status;
       await order.save();
+
+      // Jika status transaksi adalah 'settlement', tambahkan kelas_id ke fitur "my course" (jika belum ada)
+      if (webhookData.transaction_status === "settlement") {
+        // Dapatkan user_id dari data order
+        const { user_id } = order;
+
+        // Cari dokumen my_course untuk user_id yang sama
+        let myCourse = await MyCourse.findOne({ user_id });
+
+        // Jika dokumen my_course sudah ada, tambahkan kelas_id baru ke dalam array kelas_id
+        if (myCourse) {
+          if (!myCourse.kelas_id.includes(order.order_item)) {
+            myCourse.kelas_id.push(order.order_item);
+            await myCourse.save();
+          }
+        } else {
+          // Jika dokumen my_course belum ada, buat dokumen baru dengan user_id dan kelas_id
+          myCourse = new MyCourse({
+            user_id,
+            kelas_id: [order.order_item], // Simpan kelas_id sebagai array
+          });
+          await myCourse.save();
+        }
+      }
 
       res.status(200).send("Webhook dari Midtrans berhasil diterima");
     } catch (error) {
