@@ -64,6 +64,8 @@ module.exports = {
 
       // Perbarui status transaksi sesuai dengan yang diterima dari webhook
       transaction.transaction_status = webhookData.transaction_status;
+      transaction.fraud_status = webhookData.fraud_status;
+      transaction.payment_type = webhookData.payment_type;
       await transaction.save();
 
       // Temukan pesanan berdasarkan order_id yang terkait dengan transaksi
