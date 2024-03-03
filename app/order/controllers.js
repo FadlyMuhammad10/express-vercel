@@ -1,6 +1,7 @@
 const Order = require("./model");
 const Transaction = require("../transaction/model");
 const midtransClient = require("midtrans-client");
+const mongoose = require("mongoose");
 const uuid = require("uuid");
 
 let snap = new midtransClient.Snap({
