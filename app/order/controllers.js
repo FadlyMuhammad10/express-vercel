@@ -55,8 +55,7 @@ module.exports = {
     const transaction = new Transaction({
       order_id_midtrans: transactionDetails.transaction_details.order_id, // Simpan order_id Midtrans
       gross_amount: transactionDetails.transaction_details.gross_amount,
-      email: transactionDetails.customer_details.email,
-      nama_lengkap: transactionDetails.customer_details.first_name,
+
       // transaction_id: webhookData.transaction_id, // Gunakan transaction_id dari Midtrans
       // transaction_status: webhookData.transaction_status,
     });

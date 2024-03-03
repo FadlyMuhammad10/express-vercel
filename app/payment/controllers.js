@@ -87,6 +87,8 @@ module.exports = {
 
       // Perbarui status pesanan sesuai dengan status transaksi yang diterima dari webhook
       order.status = webhookData.transaction_status;
+      order.email = webhookData.email;
+      order.nama_lengkap = webhookData.first_name;
       await order.save();
 
       // Jika status transaksi adalah 'settlement', tambahkan kelas_id ke fitur "my course" (jika belum ada)
