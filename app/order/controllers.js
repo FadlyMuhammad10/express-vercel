@@ -14,8 +14,18 @@ module.exports = {
   create: async (req, res, next) => {
     const { order_item } = req.body;
     const { body } = req;
-    const webhookData = req.body;
-    console.log(webhookData);
+
+    // Periksa apakah pengguna sudah membeli kelas ini sebelumnya
+    const existingOrder = await Order.findOne({
+      user_id: req.user.user_id,
+      order_item,
+    });
+
+    if (existingOrder) {
+      return res
+        .status(400)
+        .json({ message: "Anda sudah membeli kelas ini sebelumnya" });
+    }
 
     // Buat order baru
     const order = new Order({
