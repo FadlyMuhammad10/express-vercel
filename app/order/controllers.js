@@ -70,10 +70,13 @@ module.exports = {
       // Pastikan pengguna sudah login dan dapatkan user_id dari sesi atau token
       const userId = req.user.user_id;
 
-      // Periksa apakah ada entri pembelian untuk classId yang ditentukan dan user_id pengguna
+      // Konversi id kelas menjadi ObjectId
+      const classId = mongoose.Types.ObjectId(req.params.id);
+
+      // Periksa apakah ada entri pembelian untuk kelas dengan id yang ditentukan dan user_id pengguna
       const order = await Order.findOne({
         user_id: userId,
-        order_item: parseInt(req.params.id),
+        order_item: classId,
       });
 
       // Jika ada order, kelas sudah dibeli
