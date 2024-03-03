@@ -65,4 +65,26 @@ module.exports = {
       token: transactionToken.token,
     });
   },
+  checkOrder: async (req, res, next) => {
+    try {
+      // Pastikan pengguna sudah login dan dapatkan user_id dari sesi atau token
+      const userId = req.user.user_id;
+
+      // Periksa apakah ada entri pembelian untuk classId yang ditentukan dan user_id pengguna
+      const order = await Order.findOne({
+        user_id: userId,
+        order_item: req.params.id,
+      });
+
+      // Jika ada order, kelas sudah dibeli
+      if (order) {
+        return res.json({ isBought: true });
+      } else {
+        return res.json({ isBought: false });
+      }
+    } catch (error) {
+      console.error("Error checking if class is bought:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 };
