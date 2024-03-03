@@ -73,7 +73,7 @@ module.exports = {
       // Periksa apakah ada entri pembelian untuk classId yang ditentukan dan user_id pengguna
       const order = await Order.findOne({
         user_id: userId,
-        order_item: req.body,
+        order_item: parseInt(req.params.id),
       });
 
       // Jika ada order, kelas sudah dibeli
