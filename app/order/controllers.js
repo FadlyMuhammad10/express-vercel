@@ -35,6 +35,8 @@ module.exports = {
       price: parseInt(body.harga),
       gross_amount: parseInt(body.harga),
       order_id: uuid.v4(),
+      email: body.email,
+      nama_lengkap: body.nama_lengkap,
     });
 
     // Simpan order ke database
@@ -46,8 +48,8 @@ module.exports = {
         gross_amount: order.gross_amount,
       },
       customer_details: {
-        first_name: body.nama_lengkap,
-        email: body.email,
+        first_name: order.nama_lengkap,
+        email: order.email,
       },
     };
     const transactionToken = await snap.createTransaction(transactionDetails);
