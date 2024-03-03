@@ -29,6 +29,12 @@ let orderSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  email: {
+    type: String,
+  },
+  nama_lengkap: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Order", orderSchema);
