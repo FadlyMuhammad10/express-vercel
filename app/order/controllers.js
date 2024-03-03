@@ -1,7 +1,7 @@
 const Order = require("./model");
 const Transaction = require("../transaction/model");
 const midtransClient = require("midtrans-client");
-const mongoose = require("mongoose");
+const { ObjectId } = require("mongoose").Types;
 const uuid = require("uuid");
 
 let snap = new midtransClient.Snap({
@@ -72,7 +72,7 @@ module.exports = {
       const userId = req.user.user_id;
 
       // Konversi id kelas menjadi ObjectId
-      const classId = mongoose.Types.ObjectId(req.params.id);
+      const classId = new ObjectId(req.params.id);
 
       // Periksa apakah ada entri pembelian untuk kelas dengan id yang ditentukan dan user_id pengguna
       const order = await Order.findOne({
