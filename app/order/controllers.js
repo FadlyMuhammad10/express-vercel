@@ -1,5 +1,6 @@
 const Order = require("./model");
 const Transaction = require("../transaction/model");
+const MyCourse = require("../myCourse/model");
 const midtransClient = require("midtrans-client");
 const { ObjectId } = require("mongoose").Types;
 const uuid = require("uuid");
@@ -17,16 +18,16 @@ module.exports = {
     const { body } = req;
 
     // Periksa apakah pengguna sudah membeli kelas ini sebelumnya
-    const existingOrder = await Order.findOne({
-      user_id: req.user.user_id,
-      order_item,
-    });
+    // const existingOrder = await Order.findOne({
+    //   user_id: req.user.user_id,
+    //   order_item,
+    // });
 
-    if (existingOrder) {
-      return res
-        .status(400)
-        .json({ message: "Anda sudah membeli kelas ini sebelumnya" });
-    }
+    // if (existingOrder) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Anda sudah membeli kelas ini sebelumnya" });
+    // }
 
     // Buat order baru
     const order = new Order({
@@ -77,14 +78,14 @@ module.exports = {
       // Konversi id kelas menjadi ObjectId
       const classId = new ObjectId(req.params.id);
 
-      // Periksa apakah ada entri pembelian untuk kelas dengan id yang ditentukan dan user_id pengguna
-      const order = await Order.findOne({
+      // Periksa apakah ada entri dalam my course untuk kelas dengan id yang ditentukan dan user_id pengguna
+      const myCourse = await MyCourse.findOne({
         user_id: userId,
-        order_item: classId,
+        kelas_id: classId,
       });
 
       // Jika ada order, kelas sudah dibeli
-      if (order) {
+      if (myCourse) {
         return res.json({ isBought: true });
       } else {
         return res.json({ isBought: false });
