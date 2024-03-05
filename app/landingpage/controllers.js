@@ -6,7 +6,7 @@ module.exports = {
     try {
       const kelas = await Kelas.find()
         .select("_id judul harga instructor kategori image_url")
-        .populate("Kategori");
+        .populate("kategori");
 
       res.status(200).json({ data: kelas });
     } catch (error) {
