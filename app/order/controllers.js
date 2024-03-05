@@ -17,18 +17,6 @@ module.exports = {
     const { order_item } = req.body;
     const { body } = req;
 
-    // Periksa apakah pengguna sudah membeli kelas ini sebelumnya
-    // const existingOrder = await Order.findOne({
-    //   user_id: req.user.user_id,
-    //   order_item,
-    // });
-
-    // if (existingOrder) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Anda sudah membeli kelas ini sebelumnya" });
-    // }
-
     // Buat order baru
     const order = new Order({
       user_id: req.user.user_id,
@@ -70,7 +58,7 @@ module.exports = {
       token: transactionToken.token,
     });
   },
-  checkOrder: async (req, res, next) => {
+  checkMyCourse: async (req, res, next) => {
     try {
       // Pastikan pengguna sudah login dan dapatkan user_id dari sesi atau token
       const userId = req.user.user_id;

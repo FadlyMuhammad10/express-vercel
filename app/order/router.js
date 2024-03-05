@@ -3,9 +3,9 @@ const router = express.Router();
 
 const auth = require("../../middleware/auth");
 
-const { create, checkOrder } = require("./controllers");
+const { create, checkMyCourse } = require("./controllers");
 
 router.post("/create", auth, create);
-router.get("/check-bought/:id", auth, checkOrder);
+router.get("/check-bought/:id", auth, checkMyCourse);
 
 module.exports = router;

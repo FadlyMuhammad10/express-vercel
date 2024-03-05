@@ -5,7 +5,7 @@ module.exports = {
   index: async (req, res, next) => {
     try {
       const kelas = await Kelas.find()
-        .select("_id judul harga instructor Kategori")
+        .select("_id judul harga instructor kategori image_url")
         .populate("Kategori");
 
       res.status(200).json({ data: kelas });
