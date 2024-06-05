@@ -12,7 +12,10 @@ module.exports = {
   },
   index: async (req, res, next) => {
     try {
-      const kelas = await Kelas.find();
+      const kelas = await Kelas.find().populate({
+        path: "image_url",
+        select: "name",
+      });
       res.status(201).json({ kelas });
     } catch (error) {
       res.status(500).json({ message: error.message });

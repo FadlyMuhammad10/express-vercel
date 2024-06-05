@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { create, index, edit, deleted } = require("./controllers");
+
 const auth = require("../../middleware/auth");
 const admin = require("../../middleware/authorization");
 

@@ -5,18 +5,23 @@ let kelasSchema = mongoose.Schema(
   {
     judul: {
       type: String,
+      require: [true, "Judul Kelas harus diisi"],
     },
     deskripsi_kelas: {
       type: String,
+      require: [true, "Deskripsi Kelas harus diisi"],
     },
     image_url: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Image",
     },
     harga: {
       type: Number,
+      require: [true, "Harga Kelas harus diisi"],
     },
     instructor: {
       type: String,
+      require: [true, "Nama pengajar Kelas harus diisi"],
     },
     kategori: {
       type: mongoose.Schema.Types.ObjectId,
@@ -32,26 +37,6 @@ let kelasSchema = mongoose.Schema(
         videoUrl: String,
       },
     ],
-    // modules: [
-    //   {
-    //     _id: {
-    //       type: String,
-    //       default: uuid.v4, // Menggunakan uuidv4 sebagai nilai default
-    //     },
-    //     title: String, // Judul modul
-    //     lessons: [
-    //       // Pelajaran dalam modul
-    //       {
-    //         _id: {
-    //           type: String,
-    //           default: uuid.v4, // Menggunakan uuidv4 sebagai nilai default
-    //         },
-    //         title: String, // Judul pelajaran
-    //         videoUrl: String, // URL video pelajaran
-    //       },
-    //     ],
-    //   },
-    // ],
   },
   { timestamps: true }
 );

@@ -27,8 +27,8 @@ app.use(methodOverride("_method"));
 
 const userRouter = require("./app/user/router");
 const kategoriRouter = require("./app/kategori/router");
-const lokasiRouter = require("./app/lokasi/router");
 const kelasRouter = require("./app/kelas/router");
+const imagesRouter = require("./app/images/router");
 const landingRouter = require("./app/landingpage/router");
 const detailpageRouter = require("./app/detailpage/router");
 const paymentRouter = require("./app/payment/router");
@@ -60,8 +60,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // router
 app.use("/user", userRouter);
 app.use("/kategori", kategoriRouter);
-app.use("/lokasi", lokasiRouter);
+
 app.use("/kelas", kelasRouter);
+app.use("/images", imagesRouter);
 
 app.use(`${URL}/landingpage`, landingRouter);
 app.use(`${URL}/detailpage`, detailpageRouter);

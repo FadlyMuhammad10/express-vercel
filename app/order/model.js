@@ -6,10 +6,10 @@ let orderSchema = mongoose.Schema(
       type: String,
       default: "pending",
     },
-    transaction: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Transaction",
-    },
+    // transaction: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "Transaction",
+    // },
     user_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
