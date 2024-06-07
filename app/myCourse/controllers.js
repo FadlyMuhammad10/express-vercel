@@ -6,7 +6,13 @@ module.exports = {
       // Temukan pengguna berdasarkan ID
       const user = await MyCourse.findOne({ user_id: req.user.user_id })
         .populate({ path: "user_id", select: "_id nama_lengkap email" })
-        .populate({ path: "kelas_id", populate: { path: "kategori" } });
+        .populate({
+          path: "kelas_id",
+          populate: [
+            { path: "kategori" },
+            { path: "image_url", select: "name" },
+          ],
+        });
 
       if (!user) {
         res.status(404).send("User not found");
