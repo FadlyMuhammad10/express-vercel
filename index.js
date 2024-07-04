@@ -35,6 +35,7 @@ const paymentRouter = require("./app/payment/router");
 const artikelRouter = require("./app/artikel/router");
 const myCourseRouter = require("./app/myCourse/router");
 const orderRouter = require("./app/order/router");
+const transactionRouter = require("./app/transaction/router");
 
 const URL = `/api/v1`;
 
@@ -60,9 +61,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // router
 app.use("/user", userRouter);
 app.use("/kategori", kategoriRouter);
-
 app.use("/kelas", kelasRouter);
 app.use("/images", imagesRouter);
+app.use("/transaction", transactionRouter);
 
 app.use(`${URL}/landingpage`, landingRouter);
 app.use(`${URL}/detailpage`, detailpageRouter);
